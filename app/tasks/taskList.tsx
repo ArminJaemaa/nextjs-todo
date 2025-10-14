@@ -19,6 +19,11 @@ export default function NoteList({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  async function seeOneTask(id: number) {
+    const res = await fetch(`/tasks/${id}`, { method: "GET" });
+    const task = await res.json();
+  }
+
   async function handleDelete(id: number) {
     await fetch(`/tasks/${id}`, { method: "DELETE" });
     onChanged?.();

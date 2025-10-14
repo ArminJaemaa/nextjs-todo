@@ -35,3 +35,28 @@ export async function DELETE(
 
   return Response.json({ success: true });
 }
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: number } }
+) {
+  const supabase = await createClient();
+  const id = (await params).id;
+  const { error, data: task } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  console.log(task);
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+    });
+  }
+
+  return new Response(JSON.stringify(task), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
